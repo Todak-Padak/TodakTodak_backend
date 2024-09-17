@@ -1,8 +1,10 @@
 package com.padaks.todaktodak.doctor.domain;
 
 import com.padaks.todaktodak.common.domain.BaseTimeEntity;
+import com.padaks.todaktodak.common.domain.DelYN;
 import com.padaks.todaktodak.doctor.dto.DoctorDetailDto;
 import com.padaks.todaktodak.doctor.dto.DoctorListDto;
+import com.padaks.todaktodak.doctor.dto.DoctorUpdateDto;
 import com.padaks.todaktodak.doctoroperatinghours.domain.DoctorOperatingHours;
 import com.padaks.todaktodak.hospital.domain.Hospital;
 import lombok.AllArgsConstructor;
@@ -31,9 +33,14 @@ public class Doctor extends BaseTimeEntity {
     @Column(nullable = false)
     private String password;
 
+    @Column(columnDefinition = "TEXT")
     private String profileImgUrl;
 
     private String bio;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private DelYN delYN = DelYN.N;
 
     @OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL)
     private DoctorOperatingHours DoctorOperatingHours;
@@ -62,5 +69,24 @@ public class Doctor extends BaseTimeEntity {
 
     public void updatePassword(String password){
         this.password = password;
+    }
+
+    public void updateProfileImage(String profileImgUrl){
+        this.profileImgUrl = profileImgUrl;
+    }
+
+    public void updateBio(String bio){
+        this.bio = bio;
+    }
+
+    public void updateDelYN(DelYN delYN){
+        this.delYN = delYN;
+    }
+
+    public void toUpdate(DoctorUpdateDto dto, String imageUrl){
+        this.password = dto.getPassword();
+        this.bio = dto.getBio();
+        this.profileImgUrl = imageUrl;
+
     }
 }

@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Long> {
-    Page<Doctor> fildAll(Pageable pageable);
-    Optional<Doctor> findByEmail(String doctorEmail);
+//    Page<Doctor> fildAll(Pageable pageable);
+    Optional<Doctor> findByDoctorEmail(String doctorEmail);
 }

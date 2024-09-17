@@ -13,14 +13,14 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secretKey}")
+    @Value("${jwt.secret}")
     private String secretKey;
     @Value("${jwt.expiration}")
     private int expiration;
 
-    @Value("${jwt.secretKeyRt}")
+    @Value("${jwt.secretKeyRT}")
     private String secretKeyRt;
-    @Value("${jwt.expirationRt}")
+    @Value("${jwt.expirationRT}")
     private int expirationRt;
 
     public String createToken(String doctorEmail) {

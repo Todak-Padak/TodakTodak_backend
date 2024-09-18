@@ -1,4 +1,4 @@
-package com.padaks.todaktodak.common.config;
+package com.padaks.todaktodak.common.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -69,7 +69,11 @@ public class JwtTokenprovider {
     }
 
     public boolean validateToken(String token) {
+        System.out.println("==============================");
+        System.out.println("토근은 들어왔니? : " + token);
         try {
+            System.out.println("==============================");
+            System.out.println("여기는 왔니??");
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (Exception e) {

@@ -3,10 +3,7 @@ package com.padaks.todaktodak.doctor.controller;
 import com.padaks.todaktodak.common.dto.CommonErrorDto;
 import com.padaks.todaktodak.common.dto.CommonResDto;
 import com.padaks.todaktodak.doctor.domain.Doctor;
-import com.padaks.todaktodak.doctor.dto.DoctorListDto;
-import com.padaks.todaktodak.doctor.dto.DoctorLoginDto;
-import com.padaks.todaktodak.doctor.dto.DoctorSaveDto;
-import com.padaks.todaktodak.doctor.dto.DoctorUpdateDto;
+import com.padaks.todaktodak.doctor.dto.*;
 import com.padaks.todaktodak.doctor.service.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -75,9 +72,16 @@ public class DoctorController {
     }
 
     @PostMapping("/delete-doctor")
-    public ResponseEntity<?> deleteDoctor(@AuthenticationPrincipal UserDetails userDetails) {
-        doctorService.deleteDoctor(userDetails.getUsername());
-        return ResponseEntity.ok(new CommonResDto(HttpStatus.OK, "의사 정보 삭제 성공", null));
+    public ResponseEntity<?> deleteDoctor(@AuthenticationPrincipal DoctorDetailDto dto) {
+        try{
+            doctorService.deleteDoctor(dto.getName());
+            CommonResDto commonResDto = new CommonResDto(HttpStatus.OK,"의사정보 삭제 성공",null);
+            return new ResponseEntity<>(commonResDto, HttpStatus.OK);
+        }catch (RuntimeException e){
+            e.printStackTrace();
+            CommonErrorDto commonErrorDto = new CommonErrorDto(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+            return new ResponseEntity<>(commonErrorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 

@@ -1,13 +1,15 @@
 package com.padaks.todaktodak.doctor.service;
 
+import com.padaks.todaktodak.common.auth.JwtTokenprovider;
+import com.padaks.todaktodak.common.domain.DelYN;
 import com.padaks.todaktodak.doctor.domain.Doctor;
 import com.padaks.todaktodak.doctor.dto.DoctorListDto;
+import com.padaks.todaktodak.doctor.dto.DoctorLoginDto;
 import com.padaks.todaktodak.doctor.dto.DoctorSaveDto;
 import com.padaks.todaktodak.doctor.dto.DoctorUpdateDto;
 import com.padaks.todaktodak.doctor.repository.DoctorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,21 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service
 @Slf4j
 @Transactional
-
+@RequiredArgsConstructor
 public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public DoctorService(DoctorRepository doctorRepository, PasswordEncoder passwordEncoder){
-        this.doctorRepository = doctorRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final JwtTokenprovider jwtTokenprovider;
 
     public Doctor doctorCreate(DoctorSaveDto dto){
         if (doctorRepository.findByDoctorEmail(dto.getDoctorEmail()).isPresent()){
@@ -38,6 +34,15 @@ public class DoctorService {
         }
         Doctor doctor = doctorRepository.save(dto.toEntity(passwordEncoder.encode(dto.getPassword())));
         return doctor;
+    }
+
+    public String loginDoctor(DoctorLoginDto dto){
+        Doctor doctor = doctorRepository.findByDoctorEmail(dto.getDoctorEmail()).orElseThrow(()->new RuntimeException("의사정보를 찾을 수 없습니다."));
+        if (!passwordEncoder.matches(dto.getPassword(), doctor.getPassword())){
+            throw new RuntimeException("잘못된 비밀번호입니다.");
+        }
+        return jwtTokenprovider.createToken(doctor.getDoctorEmail(), "DOCTOR", doctor.getId());
+
     }
 
     public Page<DoctorListDto> doctorList(Pageable pageable){
@@ -69,9 +74,22 @@ public class DoctorService {
         }
         doctorRepository.save(doctor);
     }
+
+    public void deleteDoctor(String email){
+        Doctor doctor = doctorRepository.findByDoctorEmail(email)
+                .orElseThrow(()->new RuntimeException("사용자 정보를 확인할 수 없습니다. "+ email));
+
+        doctor.setDelYN(DelYN.Y);
+        doctor.setName("<알수 없음>" + System.currentTimeMillis());
+        doctorRepository.save(doctor);
+    }
 }
 
-//if (editReqDto.getPassword() != null && !editReqDto.getPassword().isEmpty()) {
-//            validatePassword(editReqDto.getPassword(), editReqDto.getConfirmPassword(), user.getPassword());
-//            savedUser.setPassword(passwordEncoder.encode(editReqDto.getPassword()));
-//        }
+//public void deleteAccount(String email) {
+//        User user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new RuntimeException("사용자 정보를 확인할 수 없습니다: " + email));
+//
+//        user.setDelYN(DelYN.Y);
+//        user.setNickname("<알수없음>" + System.currentTimeMillis());
+//        userRepository.save(user);
+//    }

@@ -7,15 +7,13 @@ import com.padaks.todaktodak.doctor.dto.DoctorListDto;
 import com.padaks.todaktodak.doctor.dto.DoctorUpdateDto;
 import com.padaks.todaktodak.doctoroperatinghours.domain.DoctorOperatingHours;
 import com.padaks.todaktodak.hospital.domain.Hospital;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -1,4 +1,4 @@
-package com.padaks.todaktodak.doctor.config;
+package com.padaks.todaktodak.common.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

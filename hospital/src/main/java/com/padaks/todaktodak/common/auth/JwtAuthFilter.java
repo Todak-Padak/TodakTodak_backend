@@ -43,7 +43,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         System.out.println("여기!!!");
         System.out.println(jwtTokenprovider);
         try{
-            if ((token != null) && jwtTokenprovider.validateToken(token)) {
+            if ((token != null) && jwtTokenprovider.validateToken(token)){
                 String email = jwtTokenprovider.getEmailFromToken(token);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 if (userDetails != null) {

@@ -1,6 +1,6 @@
 # s3 슬꺼로 바꿈
 server:
-  port: 8081
+  port: 0
 spring:
   security:
     oauth2:
@@ -68,10 +68,10 @@ spring:
     name: member-service
 
 jwt:
-  secret: todak
-  secretKeyRT: todak
-  expirationRT: todak
-  expiration: todak  # 1 day in milliseconds
+  secret: secret_key
+  secretKeyRT: secret_key_RT
+  expirationRT: 86400000
+  expiration: 86400000  # 1 day in milliseconds
 
 # aws s3 설정
 cloud:

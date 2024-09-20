@@ -87,7 +87,7 @@ cloud:
 #  client:
 #    serviceUrl:
 #      #      eureka의 member-service(서비스)로서 등록됨을 지정하겠다.
-#      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
 aws:
   ses:
     access-key: todak # 액세스 키 ID

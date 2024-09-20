@@ -72,6 +72,24 @@ public class Member extends BaseTimeEntity {
         return this;
     }
 
+    // member update 사용
+    public Member changPass(String password){
+        this.password = password;
+        return this;
+    }
+    // member update 사용
+    public Member changeImgUrl(String imageUrl){
+        this.profileImgUrl = imageUrl;
+        return this;
+    }
+    public Member updateEntity(Address address, String name, String phone){
+        return Member.builder()
+                .address(address)
+                .name(name)
+                .phoneNumber(phone)
+                .build();
+    }
+
     public String getRoleKey() {
         return this.role.getKey();
     }

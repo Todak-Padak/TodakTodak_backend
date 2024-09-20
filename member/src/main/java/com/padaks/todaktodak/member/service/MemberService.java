@@ -44,7 +44,6 @@ public class MemberService {
     // 회원가입 및 검증
     public void create(MemberSaveReqDto saveReqDto, MultipartFile imageSsr) {
         validateRegistration(saveReqDto);
-
         // 프로필 이미지 업로드 및 url로 저장 -> aws에서 이미지를 가져오는 방식
         String imageUrl = null;
         if (saveReqDto.getProfileImage() != null && !saveReqDto.getProfileImage().isEmpty()) {
@@ -106,19 +105,22 @@ public class MemberService {
         // 비밀번호 수정
         if (editReqDto.getPassword() != null && !editReqDto.getPassword().isEmpty()) {
             validatePassword(editReqDto.getPassword(), editReqDto.getConfirmPassword(), savedMember.getPassword());
-            savedMember.setPassword(passwordEncoder.encode(editReqDto.getPassword()));
+//            savedMember.setPassword(passwordEncoder.encode(editReqDto.getPassword()));
+            savedMember.changPass(passwordEncoder.encode(editReqDto.getPassword()));
         }
 
         // 프로필 이미지 수정
         if (editReqDto.getProfileImage() != null && !editReqDto.getProfileImage().isEmpty()) {
             String imageUrl = s3ClientFileUpload.upload(editReqDto.getProfileImage(), bucketName);
-            savedMember.setProfileImgUrl(imageUrl); // 새로운 URL로 업데이트
+//            savedMember.setProfileImgUrl(imageUrl); // 새로운 URL로 업데이트
+            savedMember.changeImgUrl(imageUrl);
         }
 
         // 이름, 전화번호, 주소 업데이트
-        savedMember.setName(editReqDto.getName());
-        savedMember.setPhoneNumber(editReqDto.getPhone());
-        savedMember.setAddress(editReqDto.getAddress());
+        savedMember.updateEntity(editReqDto.getAddress(),editReqDto.getName(), editReqDto.getPhone());
+//        savedMember.setName(editReqDto.getName());
+//        savedMember.setPhoneNumber(editReqDto.getPhone());
+//        savedMember.setAddress(editReqDto.getAddress());
 
         memberRepository.save(savedMember); // 수정된 회원 정보 저장
     }

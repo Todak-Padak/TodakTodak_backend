@@ -25,7 +25,6 @@ public class PostsaveDto {
     @Column(nullable = false)
     private String content;
 
-    private MultipartFile postImgUrl;
 
     public Post toEntity(String postImgUrl) {
         return Post.builder()

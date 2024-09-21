@@ -18,8 +18,7 @@ public class BaseTimeEntity {
 
     private LocalDateTime deletedTimeAt;
 
-    // deletedTimeAt을 설정하는 메서드를 추가(기존 코드에는 deletedTImeAt이 생성시에 들어감)
-    public void setDeletedTimeAt(LocalDateTime deletedTimeAt) {
-        this.deletedTimeAt = deletedTimeAt;
+    public void updateDeleteAt(){
+        this.deletedTimeAt = LocalDateTime.now();
     }
 }

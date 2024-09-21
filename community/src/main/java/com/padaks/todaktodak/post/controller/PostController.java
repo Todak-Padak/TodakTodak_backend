@@ -2,7 +2,9 @@ package com.padaks.todaktodak.post.controller;
 
 import com.padaks.todaktodak.common.dto.CommonErrorDto;
 import com.padaks.todaktodak.common.dto.CommonResDto;
+import com.padaks.todaktodak.post.dto.PostDetailDto;
 import com.padaks.todaktodak.post.dto.PostListDto;
+import com.padaks.todaktodak.post.dto.PostUpdateReqDto;
 import com.padaks.todaktodak.post.dto.PostsaveDto;
 import com.padaks.todaktodak.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.persistence.EntityNotFoundException;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,5 +44,44 @@ public class PostController {
         CommonResDto commonResDto = new CommonResDto(HttpStatus.OK, "post 목록을 조회합니다.", postListDtos);
         return new ResponseEntity<>(commonResDto, HttpStatus.OK);
     }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<?> getPostDetail(@PathVariable Long id){
+        try {
+            PostDetailDto postDetail = postService.getPostDetail(id);
+            CommonResDto commonResDto = new CommonResDto(HttpStatus.OK, "Post 상세정보를 조회합니다.", postDetail);
+            return new ResponseEntity<>(commonResDto, HttpStatus.OK);
+        }catch (EntityNotFoundException e){
+            e.printStackTrace();
+            CommonErrorDto commonErrorDto = new CommonErrorDto(HttpStatus.NOT_FOUND, e.getMessage());
+            return new ResponseEntity<>(commonErrorDto, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<?> updatePost (@PathVariable Long id, @RequestBody PostUpdateReqDto dto){
+        try{
+            postService.postUpdate(id, dto);
+            CommonResDto commonResDto = new CommonResDto(HttpStatus.OK, "post가 성공적으로 업데이트 되었습니다.", id);
+            return new ResponseEntity<>(commonResDto, HttpStatus.OK);
+        }catch (EntityNotFoundException e){
+            CommonErrorDto commonErrorDto = new CommonErrorDto(HttpStatus.NOT_FOUND, e.getMessage());
+            return new ResponseEntity<>(commonErrorDto, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<?> deletePost(@PathVariable Long id){
+        try {
+            postService.deletePost(id);
+            CommonResDto commonResDto = new CommonResDto(HttpStatus.OK, "post가 삭제되었습니다.",id);
+            return new ResponseEntity<>(commonResDto, HttpStatus.OK);
+        }catch (EntityNotFoundException e){
+            CommonErrorDto commonErrorDto = new CommonErrorDto(HttpStatus.NOT_FOUND, e.getMessage());
+            return new ResponseEntity<>(commonErrorDto, HttpStatus.NOT_FOUND);
+        }
+
+    }
+
 
 }

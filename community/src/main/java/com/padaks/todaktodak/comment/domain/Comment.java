@@ -33,6 +33,7 @@ public class Comment extends BaseTimeEntity{
     private Post post;
 
     @OneToMany(mappedBy = "comment")
+    @Builder.Default
     private List<Notification> communityNotificationList = new ArrayList<>();
 
 }

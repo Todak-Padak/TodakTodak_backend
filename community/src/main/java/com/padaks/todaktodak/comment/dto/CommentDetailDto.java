@@ -1,22 +1,22 @@
-package com.padaks.todaktodak.post.dto;
+package com.padaks.todaktodak.comment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostListDto {
+@Builder
+public class CommentDetailDto {
     private Long id;
-    private String memberEmail;
-    private String title;
+    private String doctorEmail;
     private String content;
-    private int likeCount;
-    private int viewCount;
     private LocalDateTime createdTimeAt;
+    private LocalDateTime updatedTimeAt;
+    private Long PostId;
 }

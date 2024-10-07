@@ -49,12 +49,12 @@ public class NotificationKafkaConsumer {
             String category = "";
             if (dto.getType().equals(Type.POST)){
                 category = "질문 알림";
-                fcmService.sendMessage(dto.getReceiverEmail(), category, dto.getTitle()+"에 대한 답변이 작성되었습니다.",  Type.POST, dto.getPostId());
+                fcmService.sendMessage(dto.getReceiverEmail(), category, dto.getTitle()+"에 대한 답변이 작성되었습니다.",  Type.POST);
 
             }else if (dto.getType().equals(Type.COMMENT)){
                 category = "답변 알림";
                 String comment = "에 작성한 답변";
-                fcmService.sendMessage(dto.getReceiverEmail(), category, dto.getTitle()+comment+"에 대한 답변이 작성되었습니다.",  Type.COMMENT, dto.getPostId());
+                fcmService.sendMessage(dto.getReceiverEmail(), category, dto.getTitle()+comment+"에 대한 답변이 작성되었습니다.",  Type.COMMENT);
 
             }
 
@@ -91,7 +91,7 @@ public class NotificationKafkaConsumer {
             fcmService.sendMessage(dto.getAdminEmail(),
                     "# " + dto.getReservationType()+"/" + dto.getMedicalItem() + " 예약 안내 #",
                     body,
-                    Type.RESERVATION_NOTIFICATION, null);
+                    Type.RESERVATION_NOTIFICATION);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -120,7 +120,7 @@ public class NotificationKafkaConsumer {
             fcmService.sendMessage(dto.getAdminEmail(),
                     "# " + dto.getReservationType()+"/" + dto.getMedicalItem() + " 예약 안내 #",
                     body,
-                    Type.RESERVATION_NOTIFICATION, null);
+                    Type.RESERVATION_NOTIFICATION);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -145,7 +145,7 @@ public class NotificationKafkaConsumer {
             fcmService.sendMessage(dto.getMemberEmail() ,
                     "# 금일 " + dto.getMessage() + " #",
                     body,
-                    Type.RESERVATION_NOTIFICATION, null);
+                    Type.RESERVATION_NOTIFICATION);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

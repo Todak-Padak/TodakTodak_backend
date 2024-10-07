@@ -54,7 +54,7 @@ public class ChatService {
 
         //새로운 채팅방 생성시 admin에게 알림
         Member admin = memberRepository.findById(ADMIN_ID).orElseThrow(()-> new EntityNotFoundException("존재하지 않는 관리자입니다."));
-        fcmService.sendMessage(admin.getMemberEmail(), member.getName(),"새로운 문의 채팅방이 생성되었습니다.", Type.CHAT, null);
+        fcmService.sendMessage(admin.getMemberEmail(), member.getName(),"새로운 문의 채팅방이 생성되었습니다.", Type.CHAT);
 
         return chatRoomRepository.save(chatRoom);
     }

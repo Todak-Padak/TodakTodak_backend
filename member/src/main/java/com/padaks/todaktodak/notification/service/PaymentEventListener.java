@@ -44,11 +44,11 @@ public class PaymentEventListener {
 
             // 회원 알림
             fcmService.sendMessage(paymentSuccessDto.getMemberEmail(), paymentSuccessDto.getName() + "결제 알림",
-                    paymentSuccessDto.getFee() + "원 결제가 완료되었습니다.", Type.PAYMENT, null);
+                    paymentSuccessDto.getFee() + "원 결제가 완료되었습니다.", Type.PAYMENT);
 
             // 관리자 알림
             fcmService.sendMessage(paymentSuccessDto.getAdminEmail(), paymentSuccessDto.getName() + "결제 알림",
-                    paymentSuccessDto.getMemberEmail() + "님" + paymentSuccessDto.getFee() + "원 결제 완료", Type.PAYMENT, null);
+                    paymentSuccessDto.getMemberEmail() + "님" + paymentSuccessDto.getFee() + "원 결제 완료", Type.PAYMENT);
 
             // 메시지 처리 후 수동 오프셋 커밋
             acknowledgment.acknowledge();
@@ -67,11 +67,11 @@ public class PaymentEventListener {
         // 결제 실패 후 알림을 보낼 로직
         // 회원 알림
         fcmService.sendMessage(paymentFailDto.getMemberEmail(), "결제에 실패하였습니다.",
-                "impUid: " + paymentFailDto.getImpUid() + "의 결제건이 결제에 실패했습니다. 관리자에게 문의해주세요.", Type.PAYMENT, null);
+                "impUid: " + paymentFailDto.getImpUid() + "의 결제건이 결제에 실패했습니다. 관리자에게 문의해주세요.", Type.PAYMENT);
 
         // 관리자 알림
         fcmService.sendMessage(paymentFailDto.getAdminEmail(), "결제에 실패하였습니다.",
-                paymentFailDto.getMemberEmail() + "님의" + "impUid: " + paymentFailDto.getImpUid() + "의 결제건이 처리에 실패하였습니다.", Type.PAYMENT, null);
+                paymentFailDto.getMemberEmail() + "님의" + "impUid: " + paymentFailDto.getImpUid() + "의 결제건이 처리에 실패하였습니다.", Type.PAYMENT);
 
         // 오프셋 변경
         acknowledgment.acknowledge();
@@ -86,11 +86,11 @@ public class PaymentEventListener {
         // 결제 취소 후 알림을 보낼 로직
         // 회원 알림
         fcmService.sendMessage(paymentCancelDto.getMemberEmail(), paymentCancelDto.getName() + "의 결제 취소가 완료되었습니다.",
-                paymentCancelDto.getFee() + "원이 결제 취소되었습니다.", Type.PAYMENT, null);
+                paymentCancelDto.getFee() + "원이 결제 취소되었습니다.", Type.PAYMENT);
 
         // 토닥 관리자 알림
         fcmService.sendMessage(paymentCancelDto.getAdminEmail(), paymentCancelDto.getName() + "의 결제 취소가 완료되었습니다.",
-                paymentCancelDto.getMemberEmail() + "님의" + paymentCancelDto.getFee() + "원이 결제 취소되었습니다.", Type.PAYMENT, null);
+                paymentCancelDto.getMemberEmail() + "님의" + paymentCancelDto.getFee() + "원이 결제 취소되었습니다.", Type.PAYMENT);
 
 
         // 오프셋 변경
@@ -107,11 +107,11 @@ public class PaymentEventListener {
 
         // 회원 알림
         fcmService.sendMessage(paymentCancelFailDto.getMemberEmail(), "impUid: " + paymentCancelFailDto.getImpUid() + "의 결제 취소에 실패했습니다..",
-                paymentCancelFailDto.getFee() + "원이 결제 취소에 실패했습니다. 관리자에게 문의해주세요.", Type.PAYMENT, null);
+                paymentCancelFailDto.getFee() + "원이 결제 취소에 실패했습니다. 관리자에게 문의해주세요.", Type.PAYMENT);
 
         // 토닥 관리자 알림
         fcmService.sendMessage(paymentCancelFailDto.getAdminEmail(), "impUid: " + paymentCancelFailDto.getImpUid() + "의 결제 취소에 실패했습니다..",
-                paymentCancelFailDto.getMemberEmail()+"님이 요청하신 " + paymentCancelFailDto.getFee() + "원이 결제 취소에 실패했습니다", Type.PAYMENT, null);
+                paymentCancelFailDto.getMemberEmail()+"님이 요청하신 " + paymentCancelFailDto.getFee() + "원이 결제 취소에 실패했습니다", Type.PAYMENT);
 
         // 오프셋 변경
         acknowledgment.acknowledge();

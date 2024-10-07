@@ -29,7 +29,7 @@ public class FcmService {
         System.out.println(member);
     }
 
-    public void sendMessage(String memberEmail, String title, String body, Type type, Long id){
+    public void sendMessage(String memberEmail, String title, String body, Type type){
         Member member = memberRepository.findByMemberEmail(memberEmail)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
 
@@ -46,16 +46,12 @@ public class FcmService {
                 .content(title +"\n"+ body)  //알림 내용 저장
                 .isRead(false)      //notification 생성될때 = false -> 사용자가 알림 누르는 순간 true로 바껴야함
                 .type(type)
-                .refId(id)        //등록된 post의 Id
+                .refId(null)        //등록된 post의 Id
                 .build();
 
         //db에 Notification 저장
         notificationRepository.save(notification);
-        String urlType = null;
-        if (type.equals(Type.POST) || type.equals(Type.COMMENT)){urlType = "post";} //url 이동을 위해 변환
-        if (type.equals(Type.RESERVATION_NOTIFICATION) || type.equals(Type.RESERVATION_WAITING)) {urlType = "reservation";}
-        if (type.equals(Type.PAYMENT)){ urlType = String.valueOf(type);}
-        String url = "http://localhost:8081/" + urlType + id ;
+
         Message message = Message.builder()
                 .setWebpushConfig(WebpushConfig.builder()
                         .setNotification(WebpushNotification.builder()
@@ -63,7 +59,6 @@ public class FcmService {
                                 .setBody(body)
                                 .build())
                         .build())
-                .putData("url", url) //이동할 url 추가
                 .setToken(token)
                 .build();
 

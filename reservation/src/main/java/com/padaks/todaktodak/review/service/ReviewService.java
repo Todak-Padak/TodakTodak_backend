@@ -1,7 +1,6 @@
 package com.padaks.todaktodak.review.service;
 
 import com.padaks.todaktodak.common.dto.MemberFeignDto;
-import com.padaks.todaktodak.common.exception.BaseException;
 import com.padaks.todaktodak.common.feign.MemberFeignClient;
 import com.padaks.todaktodak.reservation.domain.Reservation;
 import com.padaks.todaktodak.reservation.repository.ReservationRepository;
@@ -188,11 +187,5 @@ public class ReviewService {
             return name.charAt(0) + "*" + name.substring(2);
         }
         return name;
-    }
-    
-//    해당 예약의 리뷰가 존재하는지 확인하는 메서드
-    public boolean isReview(Long reservationId){
-        Review review = reviewRepository.findByReservationId(reservationId).orElse(null);
-        return review != null;
     }
 }

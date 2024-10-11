@@ -16,7 +16,6 @@ import com.padaks.todaktodak.reservation.realtime.RealTimeService;
 import com.padaks.todaktodak.reservation.repository.ReservationHistoryRepository;
 import com.padaks.todaktodak.reservation.repository.ReservationRepository;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -284,41 +283,5 @@ public class ReservationService {
 
         return reservationRepository.
                 findScheduledReservationTimesByDoctor(dto.getDoctorEmail(), dto.getDate());
-    }
-
-    public List<?> todayListReservation(Pageable pageable){
-        LocalDate today = LocalDate.now();
-        MemberFeignDto member = getMemberInfo();
-
-        List<Reservation> reservationList = reservationRepository.findByMemberEmailAndReservationDate(member.getMemberEmail(), today);
-        List<TodayReservationResDto> todayReservationResDtos = new ArrayList<>();
-
-        for(Reservation res : reservationList){
-            ChildResDto childResDto = memberFeign.getMyChild(res.getChildId());
-            TodayReservationResDto dto = dtoMapper.toTodayReservationResDto(res, childResDto);
-            dtoMapper.setReservationTime(dto, res);
-            todayReservationResDtos.add(dto);
-        }
-        return todayReservationResDtos;
-    }
-
-    public List<?> yesterdayListReservation(Pageable pageable){
-        LocalDate today = LocalDate.now();
-        MemberFeignDto member = getMemberInfo();
-
-        Page<Reservation> reservationList =
-                reservationRepository.findByMemberEmailAndReservationDateBefore(member.getMemberEmail(), today, pageable);
-
-        return reservationList.stream()
-                .map(res -> {
-                    ChildResDto childResDto = memberFeign.getMyChild(res.getChildId());
-                    // DTO 변환
-                    TodayReservationResDto dto = dtoMapper.toTodayReservationResDto(res, childResDto);
-                    // reservationTime 설정
-                    dtoMapper.setReservationTime(dto, res);
-                    // 변환된 DTO 반환
-                    return dto;
-                })
-                .collect(Collectors.toList()); // 리스트로 수집
     }
 }

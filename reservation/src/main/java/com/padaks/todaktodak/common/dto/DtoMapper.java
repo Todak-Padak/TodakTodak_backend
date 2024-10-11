@@ -7,7 +7,9 @@ import com.padaks.todaktodak.reservation.dto.*;
 import com.padaks.todaktodak.reservation.domain.ReservationHistory;
 import com.padaks.todaktodak.review.domain.Review;
 import com.padaks.todaktodak.review.dto.ReviewSaveReqDto;
-import org.mapstruct.*;
+import org.mapstruct.Builder;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.lang.reflect.Member;
@@ -47,18 +49,4 @@ public interface DtoMapper {
     CheckHospitalListReservationResDto toHospitalListReservation(Reservation reservation);
 
     RedisDto toRedisDto(Reservation reservation);
-
-    @Mapping(source = "childResDto.name", target = "childName")
-    @Mapping(source = "reservation.hospital.name", target = "hospitalName")
-    @Mapping(source = "childResDto.imageUrl", target = "profileImgUrl")
-    TodayReservationResDto toTodayReservationResDto(Reservation reservation, ChildResDto childResDto);
-
-    @AfterMapping
-    default void setReservationTime(@MappingTarget TodayReservationResDto dto, Reservation reservation){
-        if(reservation.getReservationTime() != null){
-            dto.setReservationTime(reservation.getReservationTime().withSecond(0));
-        } else {
-            dto.setReservationTime(reservation.getCreatedAt().toLocalTime().withSecond(0));
-        }
-    }
 }

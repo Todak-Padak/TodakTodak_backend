@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Configuration
@@ -27,12 +29,12 @@ public class FirebaseConfig {
     public void init() {
         if (FirebaseApp.getApps().isEmpty()) { // FirebaseApp이 초기화되지 않은 경우에만 초기화
             try {
-                ClassLoader classLoader = getClass().getClassLoader();
+//                ClassLoader classLoader = getClass().getClassLoader();
 //                InputStream serviceAccount = classLoader.getResourceAsStream("todak-1f8d0-firebase-adminsdk-tbqa8-b7c41789c9.json");
 
                 String jsonString = getSecretFromAWS(secretFileName);
                 // Kubernetes의 Secret에서 파일을 가져옵니다.
-                InputStream serviceAccount = getClass().getResourceAsStream("/" + secretFileName);
+                InputStream serviceAccount = new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8));
 
                 if (serviceAccount == null) {
                     throw new IllegalArgumentException("Firebase service account file not found in the specified path");

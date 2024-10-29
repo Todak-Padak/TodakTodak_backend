@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 //k8s배포시에는 url = "http://member-service" 추가
-@FeignClient(name = "member-service",  configuration = FeignConfig.class)
+@FeignClient(name = "member-service", url = "http://member-service", configuration = FeignConfig.class)
 public interface MemberFeignClient {
     @GetMapping("/member/get/member")
         // member-service에 구현된 경로

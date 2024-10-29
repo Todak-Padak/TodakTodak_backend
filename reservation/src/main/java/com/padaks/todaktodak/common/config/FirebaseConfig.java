@@ -40,7 +40,7 @@ public class FirebaseConfig {
 
                 FirebaseOptions options = FirebaseOptions.builder()
                         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                        .setDatabaseUrl("https://padak-todak-default-rtdb.asia-southeast1.firebasedatabase.app")
+                        .setDatabaseUrl("https://todak-1f8d0-default-rtdb.asia-southeast1.firebasedatabase.app")
                         .build();
                 FirebaseApp.initializeApp(options);
             } catch (Exception e) {

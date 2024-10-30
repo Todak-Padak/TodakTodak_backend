@@ -46,4 +46,9 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
     Optional<Hospital> findByAdminEmail(String adminEmail);
 
     Long countByIsAcceptFalse();
+
+    Optional<Hospital> findByNameAndDeletedAtIsNull(String name);
+    Optional<Hospital> findByAddressAndDeletedAtIsNull(String address);
+    Optional<Hospital> findByPhoneNumberAndDeletedAtIsNull(String phoneNumber);
+    Optional<Hospital> findByBusinessRegistrationInfoAndDeletedAtIsNull(String businessRegistrationInfo);
 }

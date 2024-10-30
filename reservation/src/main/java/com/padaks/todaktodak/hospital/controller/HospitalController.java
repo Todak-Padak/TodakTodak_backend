@@ -1,5 +1,6 @@
 package com.padaks.todaktodak.hospital.controller;
 
+import com.padaks.todaktodak.common.dto.CommonErrorDto;
 import com.padaks.todaktodak.common.dto.CommonResDto;
 import com.padaks.todaktodak.common.dto.HospitalNameFeignDto;
 import com.padaks.todaktodak.common.dto.MemberFeignDto;
@@ -39,9 +40,14 @@ public class HospitalController {
     // 병원 admin + 병원 등록 (미승인 상태)
     @PostMapping("/hospital-admin/register")
     public ResponseEntity<Object> registerHospitalAndAdmin(@RequestBody HospitalAndAdminRegisterReqDto dto){
-        HospitalAndAdminRegisterResDto hospitalAndAdminRegisterResDto
-                = hospitalService.registerHospitalAndAdmin(dto);
-        return new ResponseEntity<>(new CommonResDto(HttpStatus.CREATED, "병원, 병원 admin 등록 성공 (미승인)", hospitalAndAdminRegisterResDto), HttpStatus.CREATED);
+        try{
+            HospitalAndAdminRegisterResDto hospitalAndAdminRegisterResDto
+                    = hospitalService.registerHospitalAndAdmin(dto);
+            return new ResponseEntity<>(new CommonResDto(HttpStatus.CREATED, "병원, 병원 admin 등록 성공 (미승인)", hospitalAndAdminRegisterResDto), HttpStatus.CREATED);
+        }catch (IllegalArgumentException e) {
+            CommonErrorDto commonErrorDto = new CommonErrorDto(HttpStatus.BAD_REQUEST, e.getMessage());
+            return new ResponseEntity<>(commonErrorDto, HttpStatus.BAD_REQUEST);
+        }
     }
     // 병원 admin + 병원 승인처리 (토닥 admin만 가능)
     // 병원 : isAccept = true, 병원 admin : deletedAt = null

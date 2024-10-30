@@ -72,6 +72,22 @@ public class HospitalService {
     // 회원가입 승인요청 -> 병원데이터 등록, 승인여부 false (미승인)
     public HospitalAndAdminRegisterResDto registerHospitalAndAdmin(HospitalAndAdminRegisterReqDto dto){
 
+//        병원 이름 유효성검사 hospitalName
+        if(hospitalRepository.findByNameAndDeletedAtIsNull(dto.getHospitalName()).isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 병원 이름입니다.");
+        }
+//        병원 주소 유효성검사 address
+        if(hospitalRepository.findByAddressAndDeletedAtIsNull(dto.getAddress()).isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 병원 주소입니다.");
+        }
+//        병원 번호 유효성검사 hospitalPhoneNumber
+        if(hospitalRepository.findByPhoneNumberAndDeletedAtIsNull(dto.getHospitalPhoneNumber()).isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 병원 번호입니다.");
+        }
+//        사업자 번호 유효성검사 businessRegistrationInfo
+        if(hospitalRepository.findByBusinessRegistrationInfoAndDeletedAtIsNull(dto.getBusinessRegistrationInfo()).isPresent()) {
+            throw new IllegalArgumentException("이미 존재하는 병원 사업자번호입니다.");
+        }
         Hospital hospital = hospitalRepository.save(dto.toEntity(dto)); // 병원 + 병원admin DTO -> 병원 엔티티로 조립
         HospitalAdminSaveReqDto adminSaveReqDto = HospitalAdminSaveReqDto.fromDto(dto, hospital.getId()); // 병원 admin(Member) 등록 request DTO
 

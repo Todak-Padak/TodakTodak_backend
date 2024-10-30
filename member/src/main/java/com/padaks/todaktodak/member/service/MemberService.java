@@ -154,7 +154,7 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("잘못된 이메일/비밀번호 입니다."));
 
         // Role이 HospitalAdmin 또는 NonUser가 아닌 경우에만 예외를 던짐
-        if (!member.getRole().equals(Role.HOSPITAL) && !member.getRole().equals(Role.DOCTOR) && !member.equals(Role.NONUSER)) {
+        if (!member.getRole().equals(Role.HOSPITAL) && !member.getRole().equals(Role.DOCTOR) && !member.getRole().equals(Role.NONUSER)) {
             throw new SecurityException("병원 관계자만 로그인이 가능합니다.");
         }
 

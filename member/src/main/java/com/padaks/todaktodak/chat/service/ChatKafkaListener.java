@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 public class ChatKafkaListener { // Kafka
 
     private final WebSocketService webSocketService;
-    private static final Long ADMIN_ID = 1L; // Admin 고정 ID
     private final MemberRepository memberRepository;
     private final FcmService fcmService;
     private final ChatRoomRepository chatRoomRepository;
@@ -33,7 +32,7 @@ public class ChatKafkaListener { // Kafka
         // WebSocket을 통해 메시지를 채팅방에 전달
         webSocketService.sendMessage(chatRoomId, memberEmail, chatMessageReqDto);
 
-        String adminEmail = memberRepository.findByIdOrThrow(ADMIN_ID).getMemberEmail();
+        String adminEmail = "todak@test.com";
         ChatRoom chatRoom = chatRoomRepository.findByIdOrThrow(chatRoomId);
         String userEmail = chatRoom.getMember().getMemberEmail();
 

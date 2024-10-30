@@ -1,3 +1,5 @@
 docker-compose.yml
 ./docker-compose.yml
 .DS_Store
+member/src/main/resources/todak-1f8d0-firebase-adminsdk-tbqa8-b7c41789c9.json
+reservation/src/main/resources/todak-1f8d0-firebase-adminsdk-tbqa8-b7c41789c9.json

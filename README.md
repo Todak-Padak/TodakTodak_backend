@@ -209,7 +209,7 @@
 <br>
 
 ## 시스템 아키텍쳐
-<img width="500" alt="배포아키텍쳐" src="https://github.com/user-attachments/assets/2b101298-2cfb-48d2-9ad7-d49dc416834b">
+<img width="500" alt="배포아키텍쳐" src="https://github.com/user-attachments/assets/bfb83e4c-1a39-4c3f-9285-52774302096d">
 
 ### 아키텍쳐 선택이유
 |  | **Kubernetes** | docker compose |

@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "hospital-service-client")
+@FeignClient(name = "hospital-service-client", url = "http://member-service")
 public interface PayMentFeign {
 
     @GetMapping(value = "/doctor/{email}")

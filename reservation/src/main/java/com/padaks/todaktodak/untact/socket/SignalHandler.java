@@ -118,6 +118,12 @@ public class SignalHandler extends TextWebSocketHandler implements MessageListen
                         redisPublisher.publish(new WebSocketMessage(
                                 userName, MSG_TYPE_LEAVE, message.getData(), null, null
                         ));
+
+                        // 방에 남은 사용자가 없으면 방 삭제
+                        if (roomService.getClients(room).isEmpty()) {
+                            logger.info("[ws] Room #{} is empty and will be removed", message.getData());
+                            roomService.removeRoom(session.getId()); // 방 삭제 메서드 호출
+                        }
                     });
                     break;
 
@@ -131,7 +137,7 @@ public class SignalHandler extends TextWebSocketHandler implements MessageListen
         }
     }
 
-    private void sendMessage(WebSocketSession session, WebSocketMessage message) {
+    private synchronized void sendMessage(WebSocketSession session, WebSocketMessage message) {
         try {
             String json = objectMapper.writeValueAsString(message);
             session.sendMessage(new TextMessage(json));

@@ -93,13 +93,15 @@ public class NotificationKafkaConsumer {
 
     @KafkaListener(topics = "immediate-reservation-success-notify", containerFactory = "reservationKafkaContainerFactory")
     public void immediateNotification(String message, Acknowledgment acknowledgment){
-
+        log.info("1" + message);
         if (message.startsWith("\"") && message.endsWith("\"")) {
             message = message.substring(1, message.length() -1).replace("\"", "\"");
             message = message.replace("\\", "");
         }
 
+        log.info("2" + message);
         try {
+            log.info("나야 카프카 시작");
             ReservationSuccessResDto dto =
                     objectMapper.readValue(message, ReservationSuccessResDto.class);
 
